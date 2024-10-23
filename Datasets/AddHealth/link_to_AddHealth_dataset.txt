@@ -1,0 +1,4 @@
+1. Ask permission to download this dataset to the data owner:
+https://networks.skewed.de/net/add_health
+
+2. Place the commXX.csv.zip files in this folder.
