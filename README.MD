@@ -48,5 +48,5 @@ python perform_paper_simulations
 
 This is necessary to reproduce some of the paper results, but precomputed simulation results are available in the folder `paper_results`.
 
-2. To generate the figures, open `jupyter lab` (e.g. by running the command `jupyter lab` in the Anaconda terminal in the location you put the paper code). The notebook is divided into cells (some have text while other have code). Each cell can be executed using `Shift + Enter`. Executing text cells does nothing and executing code cells runs the code
-and produces it's output. To execute the whole notebook, run all cells in order.
+2. To generate the figures, open `jupyter lab` (e.g. by running the command `jupyter lab` in the Anaconda terminal in the folder containing the paper code). The notebook is divided into cells (some have text while others have code). Each cell can be executed using `Shift + Enter`. Executing text cells does nothing and executing code cells runs the code
+and produces its outputs. To execute the whole notebook, run all cells in order.
