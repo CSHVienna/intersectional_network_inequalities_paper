@@ -43,7 +43,7 @@ conda activate intersectional
 1. Perform the paper simulations by running:
 
 ```
-python perform_paper_simulations
+python perform_paper_simulations.py
 ```
 
 This is necessary to reproduce some of the paper results, but precomputed simulation results are available in the folder `paper_results`.
