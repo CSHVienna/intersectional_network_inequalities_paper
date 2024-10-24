@@ -1,8 +1,9 @@
-# Code for reproducing the results and figures from the paper (*Intersectional inequalities in social networks*)
+# Code for reproducing the results and figures from the paper *Intersectional inequalities in social networks*
 
 by
 S. Martin-Gutierrez,
 M. N. Cartier van Dissel,
+and
 F. Karimi
 
 ## Abstract
@@ -12,14 +13,14 @@ In this work, we systematically analyze the impact of multidimensionality on soc
 
 ## Paper code
 
-The code is divided betweeen the [`multisoc`](https://github.com/CSHVienna/multisoc) python package (we include the exact version used in the paper in a folder, no need to install the package), some auxiliary python scripts to perform the paper computations, and [Jupyter notebooks](http://jupyter.org/) to generate the figures.
+The code is divided betweeen the [`multisoc`](https://github.com/CSHVienna/multisoc) python package (we include the exact version used in the paper in a folder, no need to install the package), some auxiliary python scripts to perform the paper computations and helper functions for some of the figures, and [Jupyter notebooks](http://jupyter.org/) to generate the figures.
 
 ## Getting the code
 
 You can download a copy of all the files in this repository by cloning the
 [git](https://git-scm.com/) repository:
 
-    git clone https://github.com/pinga-lab/PAPER-REPO.git
+    git clone https://github.com/CSHVienna/intersectional_network_inequalities_paper
 
 or [download a zip archive](https://github.com/CSHVienna/intersectional_network_inequalities_paper/archive/master.zip).
 
@@ -47,5 +48,5 @@ python perform_paper_simulations
 
 This is necessary to reproduce some of the paper results, but precomputed simulation results are available in the folder `paper_results`.
 
-1. To generate the figures, open `jupyter lab` (e.g. by running the command `jupyter lab` in the Anaconda terminal in the location you put the paper code). The notebook is divided into cells (some have text while other have code). Each cell can be executed using `Shift + Enter`. Executing text cells does nothing and executing code cells runs the code
+2. To generate the figures, open `jupyter lab` (e.g. by running the command `jupyter lab` in the Anaconda terminal in the location you put the paper code). The notebook is divided into cells (some have text while other have code). Each cell can be executed using `Shift + Enter`. Executing text cells does nothing and executing code cells runs the code
 and produces it's output. To execute the whole notebook, run all cells in order.
