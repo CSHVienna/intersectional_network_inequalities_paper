@@ -1,4 +1,6 @@
-# Code for reproducing the results and figures from the paper *Intersectional inequalities in social networks* [https://arxiv.org/abs/2410.21189](https://arxiv.org/abs/2410.21189)
+# Code for reproducing the results and figures from the paper *Intersectional inequalities in social networks* 
+
+[https://arxiv.org/abs/2410.21189](https://arxiv.org/abs/2410.21189)
 
 by
 S. Martin-Gutierrez,
