@@ -1,4 +1,6 @@
-# Code for reproducing the results and figures from the paper *Intersectional inequalities in social networks*
+# Code for reproducing the results and figures from the paper *Intersectional inequalities in social networks* 
+
+[https://arxiv.org/abs/2410.21189](https://arxiv.org/abs/2410.21189)
 
 by
 S. Martin-Gutierrez,
@@ -22,7 +24,7 @@ You can download a copy of all the files in this repository by cloning the
 
     git clone https://github.com/CSHVienna/intersectional_network_inequalities_paper
 
-or [download a zip archive](https://github.com/CSHVienna/intersectional_network_inequalities_paper/archive/master.zip).
+or [download a zip file](https://github.com/CSHVienna/intersectional_network_inequalities_paper/archive/master.zip).
 
 ## Dependencies
 
