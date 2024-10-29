@@ -70,8 +70,8 @@ def load_AddHealth(NUM_SCHOOL, th_sex = 0.3, th_race=0.1, th_grade=0.05, school=
 
 def build_nodes_edges_input_df(nodes_df, edges_df, dimensions):
 
-  edges_df = edges_df.copy()
-  nodes_df = nodes_df.copy()
+  edges_df = edges_df.copy(deep=True)
+  nodes_df = nodes_df.copy(deep=True)
 
   for dim in dimensions:
       nodes_df[dim] = nodes_df[dim].cat.remove_unused_categories()

@@ -157,6 +157,123 @@ def common_language_A12(x,y):
 	A12 = (R1/m - (m+1)/2)/n
 	return A12
 
+############################################################################
+
+def build_attr_degree_array(
+	degree_dict,
+	attribute_dict,
+	g_vec,
+	attribute_key="attr"
+	):
+	dim = len(g_vec)
+	N = len(attribute_dict)
+
+	node_info_arr = np.zeros((N,dim+1))
+	comp_indices = make_composite_index(g_vec)
+
+	for n,degi in degree_dict:
+		for d,i in enumerate(attribute_dict[n][attribute_key]):
+			node_info_arr[n,d] = i
+		node_info_arr[n,dim] = degi
+
+	return node_info_arr
+
+def get_attr_degree_from_graph(G,g_vec,attribute_key="attr"):
+	degs = G.in_degree()
+	node_attr = G.nodes(data=True)
+
+	node_info_arr = build_attr_degree_array(degs,node_attr,g_vec,attribute_key=attribute_key)
+
+	return node_info_arr
+
+def get_one_dim_degrees(node_info_arr,g_vec):
+	
+	one_dim_degree_dct = {}
+	dim = len(g_vec)
+
+	for d,v_d in enumerate(g_vec):
+		one_dim_degree_dct[d] = {}
+		for i in range(v_d):
+			msk = node_info_arr[:,d] == i
+			one_dim_degree_dct[d][i] = node_info_arr[msk,dim]
+
+	return one_dim_degree_dct
+
+
+def get_multidim_degrees(node_info_arr,g_vec):
+
+	comp_indices = make_composite_index(g_vec)
+	N = len(node_info_arr)
+	dim = len(g_vec)
+	multidim_degree_dct = {}
+
+	wlth_lst = []
+	for g in comp_indices:
+		msk = np.full(N,True)
+		for d,i in enumerate(g):
+			msk = np.logical_and(msk,node_info_arr[:,d]==i)
+		multidim_degree_dct[g] = node_info_arr[msk,dim]
+
+	return multidim_degree_dct
+
+
+def get_1vRest_inequalities_from_dict(wealth_dict,ineq_fun=common_language_delta):
+
+	ineq_dict = {}
+
+	for i, w_i in wealth_dict.items():
+
+		w_rest = []
+		for j, w_j in wealth_dict.items():
+			if i != j:
+				w_rest.extend(w_j)
+
+		ineq_dict[i] = ineq_fun(w_i,w_rest)
+
+	return ineq_dict
+
+def get_1v1_inequalities_from_dict(wealth_dict,ineq_fun=common_language_delta):
+
+	ineq_dict = {}
+	
+	for i, w_i in wealth_dict.items():
+		ineq_dict[i] = {}
+		for j, w_j in wealth_dict.items():
+			ineq_dict[i][j] = ineq_fun(w_i,w_j)
+
+	return ineq_dict
+
+def get_inequality_info_from_graph(G,g_vec,attribute_key="attr",ineq_fun=common_language_delta):
+
+	node_info_arr = get_attr_degree_from_graph(G,g_vec,attribute_key=attribute_key)
+
+	one_dim_degs = get_one_dim_degrees(node_info_arr,g_vec)
+	multidim_degs = get_multidim_degrees(node_info_arr,g_vec)
+
+	full_ineq_dict = {}
+
+	for d, categories_degrees in one_dim_degs.items():
+		
+		ineq_dct_1vRest = get_1vRest_inequalities_from_dict(categories_degrees,ineq_fun=ineq_fun)
+		ineq_dct_1v1 = get_1v1_inequalities_from_dict(categories_degrees,ineq_fun=ineq_fun)
+
+		for i, ineq in ineq_dct_1vRest.items():
+			full_ineq_dict[f"dim{d}_g{i}"] = ineq
+
+		for i, j_ineq in ineq_dct_1v1.items():
+			for j, ineq in j_ineq.items():
+				full_ineq_dict[f"dim{d}_{i,j}"] = ineq
+
+	ineq_dct_1vRest_multi = get_1vRest_inequalities_from_dict(multidim_degs,ineq_fun=ineq_fun)
+	ineq_dct_1v1_multi = get_1v1_inequalities_from_dict(multidim_degs,ineq_fun=ineq_fun)
+
+	for gi, ineq in ineq_dct_1vRest_multi.items():
+		full_ineq_dict[f"multi{gi}"] = ineq
+		for gj, ineq_j in ineq_dct_1v1_multi[gi].items():
+			full_ineq_dict[f"multi{gi,gj}"] = ineq_j
+
+	return full_ineq_dict
+
 #############################################################################
 #############################################################################
 ## TESTS

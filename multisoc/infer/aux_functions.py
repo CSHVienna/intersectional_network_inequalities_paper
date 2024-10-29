@@ -2,6 +2,7 @@ import numpy as np
 import pandas as pd
 from itertools import product
 from scipy import special
+import networkx as nx
 
 from multisoc.generate.utils import get_num_multi_groups
 from multisoc.generate.utils import make_composite_index
@@ -193,3 +194,32 @@ def multi_1d_free_params(g_vec):
     g_vec = np.array(g_vec)
     D = len(g_vec)
     return np.prod(g_vec)*np.sum(g_vec) - special.comb(D,2,exact=True)
+
+def get_H_array_from_H_dataframe(H_df,column_order):
+    H = np.zeros((len(column_order),len(column_order))) + np.nan
+    for i, col1 in enumerate(column_order):
+        for j, col2 in enumerate(column_order):
+            ## To extract info from a pandas dataframe it goes like df[column][row] instead of [row][column] like an array
+            try:
+                H[i,j] = H_df[col2][col1]
+            except KeyError:
+                pass
+    return H
+
+def get_F_from_data(nodes_list,edges_list,attributes_dict,multidim_groups,dimensions_list):
+    
+    n, _ = get_n_and_counts(nodes_list,edges_list,dimensions_list)
+    F = np.zeros(tuple([len(attributes_dict[i]) for i in dimensions_list]))
+    g_vec = F.shape
+    indices_lst = make_composite_index(g_vec)
+    
+    for i, g in enumerate(multidim_groups):
+        try:
+            F[indices_lst[i]] = n[g].iloc[0]
+        except KeyError:
+            pass
+            
+    if np.sum(F) == 0:
+        raise Error("Something went wrong in the computation of F: everything is 0")
+        
+    return F
