@@ -342,7 +342,7 @@ def save_graph_json(G,group_labels,folder,fname):
 
 	print (G_json)
 	print ("***************************************")
-	print (json.dumps(G_json, indent = 4))
+	# print (json.dumps(G_json, indent = 4))
 	with open(save_path,"w") as f:
 	    f.write(json.dumps(G_json, indent = 4))
 
