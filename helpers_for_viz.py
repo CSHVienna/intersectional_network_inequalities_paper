@@ -332,12 +332,12 @@ def save_graph_json(G,group_labels,folder,fname):
 	## Convert np.int32 to int bc np.int32 are not json serializable
 	for i,n in enumerate(G_json["nodes"]):
 	    for k, v in n.items():
-	        if type(v) == np.int32:
+	        if type(v) is np.int32 or type(v) is np.int64:
 	            G_json["nodes"][i][k] = int(v)
 
 	for i,n in enumerate(G_json["links"]):
 	    for k, v in n.items():
-	        if type(v) == np.int32:
+	        if type(v) is np.int32 or type(v) is np.int64:
 	            G_json["links"][i][k] = int(v)
 
 	print (G_json)
