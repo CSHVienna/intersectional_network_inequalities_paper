@@ -105,8 +105,8 @@ if __name__ == "__main__":
 	# 	pool.close()
 	# 	pool.join()
 	for h_CD in h_CD_values:
-	for h_fm in h_fm_values:
-		for correlation in corr_values:
-			for f_f in f_f_values:
-				for f_cat in f_C_values:
-					worker_function(h_CD,h_fm,correlation,f_f,f_cat)
+		for h_fm in h_fm_values:
+			for correlation in corr_values:
+				for f_f in f_f_values:
+					for f_cat in f_C_values:
+						worker_function(h_CD,h_fm,correlation,f_f,f_cat)
