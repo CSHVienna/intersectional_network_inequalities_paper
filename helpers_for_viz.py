@@ -104,7 +104,6 @@ def av_deg_n_network_simulations(
 	mean_degrees_1d_lst = {i:{j:[] for j in range(g_vec[i])} for i in range(len(g_vec))}
 
 	for it in range(iterations):
-		print (it,"/",iterations,"h")
 		G = multidimensional_network_fix_av_degree(
 						h_mtrx_lst,
 						comp_pop_frac_tnsr,
@@ -340,11 +339,9 @@ def save_graph_json(G,group_labels,folder,fname):
 	        if type(v) is np.int32 or type(v) is np.int64:
 	            G_json["links"][i][k] = int(v)
 
-	print (G_json)
-	print ("***************************************")
-	# print (json.dumps(G_json, indent = 4))
+    G_json_str_export = json.dumps(G_json, indent = 4)
 	with open(save_path,"w") as f:
-	    f.write(json.dumps(G_json, indent = 4))
+	    f.write(G_json_str_export)
 
 def generate_viz_package(
 	N,

@@ -7,6 +7,7 @@ import pandas as pd
 from matplotlib.patches import Patch
 import time
 from multiprocessing import Pool
+from tqdm.auto import tqdm
 
 from multisoc.generate.multidimensional_network import multidimensional_network_fix_av_degree
 from multisoc.generate.two_dimensional_population import consol_comp_pop_frac_tnsr
@@ -94,19 +95,21 @@ def worker_function(h_CD,h_fm,correlation,f_f,f_cat):
 		)
 
 if __name__ == "__main__":
-	# with Pool(processes=20,maxtasksperchild=200) as pool: 
-	# 	for h_CD in h_CD_values:
-	# 		for h_fm in h_fm_values:
-	# 			for correlation in corr_values:
-	# 				for f_f in f_f_values:
-	# 					for f_cat in f_C_values:
-	# 						pool.apply_async(worker_function,args=(h_CD,h_fm,correlation,f_f,f_cat))
-	# 						# result.get()
-	# 	pool.close()
-	# 	pool.join()
-	for h_CD in h_CD_values:
-		for h_fm in h_fm_values:
-			for correlation in corr_values:
-				for f_f in f_f_values:
-					for f_cat in f_C_values:
-						worker_function(h_CD,h_fm,correlation,f_f,f_cat)
+	with Pool(processes=20,maxtasksperchild=200) as pool: 
+		for h_CD in tqdm(h_CD_values):
+			for h_fm in h_fm_values:
+				for correlation in corr_values:
+					for f_f in f_f_values:
+						for f_cat in f_C_values:
+							pool.apply_async(worker_function,args=(h_CD,h_fm,correlation,f_f,f_cat))
+							# result.get()
+		pool.close()
+		pool.join()
+
+	## Non parallel version for tests
+	# for h_CD in h_CD_values:
+	# 	for h_fm in h_fm_values:
+	# 		for correlation in corr_values:
+	# 			for f_f in f_f_values:
+	# 				for f_cat in f_C_values:
+	# 					worker_function(h_CD,h_fm,correlation,f_f,f_cat)
