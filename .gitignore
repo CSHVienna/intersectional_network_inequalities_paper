@@ -1,3 +1,9 @@
+# synthetic data for visualization
+viz_data/
+
+# garbage
+garbage/
+
 # Datasets that can not be publicly shared
 comm*.csv.zip
 

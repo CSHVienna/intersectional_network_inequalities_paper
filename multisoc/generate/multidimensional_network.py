@@ -18,7 +18,8 @@ def multidimensional_network_fix_av_degree(
     N=1000,
     v = 1,
     alpha = None,
-    p_d = None
+    p_d = None,
+    random_pop=True
     ):
     """Generate a multidimensional graph with fixed average degree
 
@@ -82,7 +83,7 @@ def multidimensional_network_fix_av_degree(
     assert D == comp_pop_frac_tnsr.ndim    
 
     ## Build random population of nodes alla Centola
-    G = build_social_structure(N,comp_pop_frac_tnsr,directed)
+    G = build_social_structure(N,comp_pop_frac_tnsr,directed,random_pop)
 
     ## Build interaction function (faster than an if-switch inside 
     ## the inner for loop)
@@ -396,17 +397,61 @@ def build_probs_pop(comp_pop_frac_tnsr):
     assert np.abs(np.sum(p) - 1.0) < 1e-13
     return X, p
 
-def build_social_structure(N,comp_pop_frac_tnsr,directed):
+def build_social_structure(N,comp_pop_frac_tnsr,directed,random=True):
     ## Build probability distribution of composite populations
     memberships, probs = build_probs_pop(comp_pop_frac_tnsr)
+    probs = np.array(probs)
     memberships_idx = list(range(len(memberships)))
-    ## Assign a membership to each node
+
+    if not random:
+        counts = np.round(probs * N)
+        counts = counts.astype(int)
+        
+        if np.sum(counts) < N:
+            diff = N - np.sum(counts)
+            maxind = np.argmax(counts)
+            counts[maxind] += diff
+        elif np.sum(counts) > N:
+            diff = np.sum(counts) - N
+            maxind = np.argmax(counts)
+            counts[maxind] -= diff
+
+        assert np.sum(counts) == N
+        
+        if np.any(counts<=0):
+            print ("WARNING! At least one multidimensional group has no members.\
+            Increase total population size N or change population fractions.")
+
+        node_type_indices = []
+        for node_type_idx, count_i in enumerate(counts):
+            node_type_indices.extend([node_type_idx for _ in range(count_i)])
+
+        ## Correct for rounding error
+        ## This thing should not be necessary any more
+        if N < len(node_type_indices):
+            node_type_indices = node_type_indices[:N]
+        elif N > len(node_type_indices):
+            additional_nodes = len(node_type_indices)-N
+            max_ind = np.argmax(probs)[0]
+            for _ in range(additional_nodes):
+                node_type_indices.append(max_ind)
+
+        assert len(node_type_indices) == N
+        node_type_indices = np.array(node_type_indices)
+        np.random.shuffle(node_type_indices)
+        # N = len(node_type_indices)
+ 
     if directed:
         G = nx.DiGraph()
     else:
         G = nx.Graph()
+
+    ## Assign a membership to each node
     for n in range(N):
-        node_type_idx = np.random.choice(memberships_idx,p=probs)
+        if random:
+            node_type_idx = np.random.choice(memberships_idx,p=probs)
+        else:
+            node_type_idx = node_type_indices[n]
         node_type = memberships[node_type_idx]
         G.add_node(n,attr=node_type)
     return G
