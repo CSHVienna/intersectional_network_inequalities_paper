@@ -340,6 +340,9 @@ def save_graph_json(G,group_labels,folder,fname):
 	        if type(v) == np.int32:
 	            G_json["links"][i][k] = int(v)
 
+    print (G_json)
+    print ("***************************************")
+    print (json.dumps(G_json, indent = 4))
 	with open(save_path,"w") as f:
 	    f.write(json.dumps(G_json, indent = 4))
 
