@@ -94,7 +94,7 @@ def worker_function(h_CD,h_fm,correlation,f_f,f_cat):
 		)
 
 if __name__ == "__main__":
-	with Pool(processes=20,maxtasksperchild=20) as pool: 
+	with Pool(processes=20,maxtasksperchild=200) as pool: 
 		for h_CD in h_CD_values:
 			for h_fm in h_fm_values:
 				for correlation in corr_values:

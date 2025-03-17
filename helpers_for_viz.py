@@ -103,9 +103,8 @@ def av_deg_n_network_simulations(
 	group_deg_rank_lst = np.zeros((iterations,N,len(g_vec)))
 	mean_degrees_1d_lst = {i:{j:[] for j in range(g_vec[i])} for i in range(len(g_vec))}
 
-
-	for it in tqdm(range(iterations)):
-
+	for it in range(iterations):
+		print (it,"/",iterations,"h")
 		G = multidimensional_network_fix_av_degree(
 						h_mtrx_lst,
 						comp_pop_frac_tnsr,
