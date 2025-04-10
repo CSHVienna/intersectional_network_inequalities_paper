@@ -21,7 +21,8 @@ def plot_multidimensional_inequalities(
     corr,
     group_labels = None,
     multidim_colors = None,
-    axs = None
+    axs = None,
+    plot_only_minorities = False
     ):
 
     ## Preliminaries
@@ -131,6 +132,9 @@ def plot_multidimensional_inequalities(
 #         plt.figure()
         plt.sca(axs[d])
         for vi in range(F.shape[d]):
+            if plot_only_minorities:
+                if vi > 0:
+                    break
             yplt = onedim_deltas_lst[d][vi]
             p = plt.plot(h_sym_lst,yplt,"-",label=group_labels[d][vi])
             ## Label lines with group sizes
@@ -198,7 +202,7 @@ def plot_multidimensional_inequalities(
 
     return fig, axs
 
-def plot_simulations_results(res_aggr_df,axs,corr,f1m,f2m,multidim_colors):
+def plot_simulations_results(res_aggr_df,axs,corr,f1m,f2m,multidim_colors,plot_only_minorities=False):
     ## Include simulations results
     msk = np.abs(res_aggr_df["consol"] - corr) < 1e-14 ## Stored correlation values might not be exactly the same due to roundoff error
     msk = np.logical_and(msk, res_aggr_df["f0_0"] == f1m)
@@ -212,20 +216,22 @@ def plot_simulations_results(res_aggr_df,axs,corr,f1m,f2m,multidim_colors):
     xplt = res_aggr_df[msk]["h_sym"]
     yplt = res_aggr_df[msk]["dim0_g0_delta_mean"]
     plt.plot(xplt,yplt,"o",markeredgecolor="none",color="C0",markersize=4,markeredgewidth=0.5)
-    
-    xplt = res_aggr_df[msk]["h_sym"]
-    yplt = res_aggr_df[msk]["dim0_g1_delta_mean"]
-    plt.plot(xplt,yplt,"o",markeredgecolor="none",color="C1",markersize=4,markeredgewidth=0.5)
+
+    if not plot_only_minorities:
+        xplt = res_aggr_df[msk]["h_sym"]
+        yplt = res_aggr_df[msk]["dim0_g1_delta_mean"]
+        plt.plot(xplt,yplt,"o",markeredgecolor="none",color="C1",markersize=4,markeredgewidth=0.5)
     
     ## Dim 2
     plt.sca(axs[1])
     xplt = res_aggr_df[msk]["h_sym"]
     yplt = res_aggr_df[msk]["dim1_g0_delta_mean"]
     plt.plot(xplt,yplt,"o",markeredgecolor="none",color="C0",markersize=4,markeredgewidth=0.5)
-    
-    xplt = res_aggr_df[msk]["h_sym"]
-    yplt = res_aggr_df[msk]["dim1_g1_delta_mean"]
-    plt.plot(xplt,yplt,"o",markeredgecolor="none",color="C1",markersize=4,markeredgewidth=0.5)
+
+    if not plot_only_minorities:
+        xplt = res_aggr_df[msk]["h_sym"]
+        yplt = res_aggr_df[msk]["dim1_g1_delta_mean"]
+        plt.plot(xplt,yplt,"o",markeredgecolor="none",color="C1",markersize=4,markeredgewidth=0.5)
     
     ## Multi
     plt.sca(axs[2])

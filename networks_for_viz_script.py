@@ -8,6 +8,7 @@ from matplotlib.patches import Patch
 import time
 from multiprocessing import Pool
 from tqdm.auto import tqdm
+import os
 
 from multisoc.generate.multidimensional_network import multidimensional_network_fix_av_degree
 from multisoc.generate.two_dimensional_population import consol_comp_pop_frac_tnsr
@@ -79,6 +80,12 @@ def worker_function(h_CD,h_fm,correlation,f_f,f_cat):
 	
 	fname = f"initial_multi_example_HighCorrelation_ff{int(100*f_f):02d}_fC{int(100*f_cat):02d}_c{int(100*consol):02d}_hf{int(100*h_f):02d}_hm{int(100*h_m):02d}_hC{int(100*h_cat):02d}_hD{int(100*h_dog):02d}"
 	
+	## If file exists, skip computation instead of overwriting
+	save_path = folder + "/" + fname
+	if os.path.exists(save_path):
+		print ("WARNING!!!! \n ********************************\nFile ",save_path," exists!! Skipping computation instead of rewriting!!")
+		return
+
 	generate_viz_package(
 		N,
 		m,
